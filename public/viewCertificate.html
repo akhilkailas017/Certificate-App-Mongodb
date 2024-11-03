@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Home</title>
+		
+		<script src="https://cdn.tailwindcss.com"></script>
+	</head>
+	<body class="bg-[#F2F2F2] font-[Arial]">
+		<div class="mx-auto w-[1200px] pt-[50px] h-[530px] rounded-[5px] bg-[#F5F9F8] mt-[50px] shadow-2xl">
+			<h3 class="text-center text-[25px]">Kerala Blockchain Academy</h3>
+			<img src="/images/dapp-logo.png" class="w-[20%] mx-auto mt-[10px]">
+			<br><br>
+			<p class="text-[19px] text-center">This is to certify that <span id="name"></span> <br>has sucessfully completed <span id="course"></span><br>with <span id="grade"></span> on <span id="date"></span> </p>
+		</div>
+
+		<script>
+			async function fetchDetails() {
+			  const url = window.location.href;
+			  console.log(url)
+			  const id = window.location.pathname.split('/').pop();
+			  console.log(id);
+			try {
+			const response = await fetch(`/api/certificate/${id}`);
+			console.log(response)
+			if (!response.ok) {
+				throw new Error('Failed to fetch certificate details');
+			}
+			const data = await response.json();
+			// document.getElementById('ID').textContent = data.CertID;
+			document.getElementById('course').textContent = data.CourseName;
+			document.getElementById('name').textContent = data.CandName;
+			document.getElementById('grade').textContent = data.Grade ;
+			document.getElementById('date').textContent = data.Date;
+		} catch (error) {
+			console.error('Error fetching certificate details:', error);
+			document.body.innerHTML = '<p>Failed to load certificate details.</p>';
+		}
+			}
+				document.addEventListener('DOMContentLoaded', fetchDetails);
+		  </script>
+		
+	</body>
+</html>
